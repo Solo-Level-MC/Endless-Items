@@ -1,0 +1,4 @@
+name: EndlessItems
+version: '${project.version}'
+main: com.airijko.endlessitems.EndlessItems
+api-version: '1.20'
