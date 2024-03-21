@@ -1,0 +1,14 @@
+Item:
+  ItemName: "Sword"
+  ItemLore: "A sword"
+  Material: "IRON_SWORD"
+  Rarity: "DYNAMIC"
+  Attributes:
+    Life_Force: 2.0
+    Strength: 5.0
+    Toughness: 1.0
+    Knockback_Resistance: 0.0
+    Speed: 0.01
+    Attack_Speed: 1.0
+    Precision: 10.0
+    Ferocity: 20.0

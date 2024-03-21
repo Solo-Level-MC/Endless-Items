@@ -1,0 +1,7 @@
+rarity_weights:
+  common: 45
+  uncommon: 25
+  rare: 15
+  epic: 10
+  legendary: 4
+  mythic: 1
