@@ -3,13 +3,15 @@ package com.airijko.endlessitems.items;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Item {
     public String itemName;
@@ -40,27 +42,19 @@ public class Item {
         this.ferocity = config.getDouble("Item.Attributes.Ferocity");
         this.rarity = rarity;
         applyRarityBonus();
+
+        this.itemLore = buildItemLore(config);
     }
 
-    protected void applyRarityBonus() {
-        double factor;
-        if (rarity == Rarity.COMMON) {
-            factor = 1.0;
-        } else {
-            factor = 1 + 0.2 * (rarity.ordinal() - 1);
-        }
-        lifeForce *= factor;
-        strength *= factor;
-        toughness *= factor;
-        knockbackResistance *= factor;
-        speed *= factor;
-        attackSpeed *= factor;
-        precision *= factor;
-        ferocity *= factor;
-    }
-
-    public Rarity getRarity() {
-        return this.rarity;
+    private String buildItemLore(YamlConfiguration config) {
+        return Objects.requireNonNull(config.getString("Item.ItemLore")) + "\nLife Force: " + lifeForce +
+                "\nStrength: " + strength +
+                "\nToughness: " + toughness +
+                "\nKnockback Resistance: " + knockbackResistance +
+                "\nSpeed: " + speed +
+                "\nAttack Speed: " + attackSpeed +
+                "\nPrecision: " + precision +
+                "\nFerocity: " + ferocity;
     }
 
     public ItemStack toItemStack() {
@@ -77,10 +71,40 @@ public class Item {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
 
-        meta.displayName(Component.text(this.itemName));
-        meta.lore(Collections.singletonList(Component.text(Arrays.toString(this.itemLore.split("\n")))));
+        meta.displayName(Component.text(this.rarity + " " +  this.itemName));
+
+        meta.lore(Arrays.stream(this.itemLore.split("\n"))
+                .map(Component::text)
+                .collect(Collectors.toList()));
 
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    protected void applyRarityBonus() {
+        double factor;
+        if (rarity == Rarity.COMMON) {
+            factor = 1.0;
+        } else {
+            factor = 1 + (rarity.ordinal() - 1);
+        }
+
+        lifeForce *= factor * generateRandomFactor();
+        strength *= factor * generateRandomFactor();
+        toughness *= factor * generateRandomFactor();
+        knockbackResistance *= factor * generateRandomFactor();
+        speed *= factor * generateRandomFactor();
+        attackSpeed *= factor * generateRandomFactor();
+        precision *= factor * generateRandomFactor();
+        ferocity *= factor * generateRandomFactor();
+    }
+
+    private double generateRandomFactor() {
+        Random random = new Random();
+        return 1 + 0.4 + (0.75 - 0.4) * random.nextDouble();
+    }
+
+    public Rarity getRarity() {
+        return this.rarity;
     }
 }
