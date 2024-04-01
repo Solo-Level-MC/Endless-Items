@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Item {
     public String itemName;
@@ -47,14 +48,16 @@ public class Item {
     }
 
     private String buildItemLore(YamlConfiguration config) {
-        return "\nLife Force: " + formatAttribute(lifeForce) +
-                "\nStrength: " + formatAttribute(strength) +
-                "\nToughness: " + formatAttribute(toughness) +
-                "\nKnockback Resistance: " + formatAttribute(knockbackResistance) +
-                "\nSpeed: " + formatAttribute(speed) +
-                "\nAttack Speed: " + formatAttribute(attackSpeed) +
-                "\nPrecision: " + formatAttribute(precision) +
-                "\nFerocity: " + formatAttribute(ferocity) +
+        return String.join("\n",
+                "&c❤ Life Force &f»&7 " + formatAttribute(lifeForce),
+                "&6⚔ Strength &f»&7 " + formatAttribute(strength),
+                "&9⛨ Toughness &f»&7 " + formatAttribute(toughness),
+                "&a⌘ Knockback Resistance &f»&7 " + formatAttribute(knockbackResistance),
+                "&b☁ Speed &f»&7 " + formatAttribute(speed),
+                "&e☄ Attack Speed &f»&7 " + formatAttribute(attackSpeed),
+                "&d✦ Precision &f»&7 " + formatAttribute(precision),
+                "&5❂ Ferocity &f»&7 " + formatAttribute(ferocity)
+        ) +
                 "\n" + Objects.requireNonNull(config.getString("Item.ItemLore"));
     }
 
