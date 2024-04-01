@@ -47,14 +47,23 @@ public class Item {
     }
 
     private String buildItemLore(YamlConfiguration config) {
-        return Objects.requireNonNull(config.getString("Item.ItemLore")) + "\nLife Force: " + lifeForce +
-                "\nStrength: " + strength +
-                "\nToughness: " + toughness +
-                "\nKnockback Resistance: " + knockbackResistance +
-                "\nSpeed: " + speed +
-                "\nAttack Speed: " + attackSpeed +
-                "\nPrecision: " + precision +
-                "\nFerocity: " + ferocity;
+        return "\nLife Force: " + formatAttribute(lifeForce) +
+                "\nStrength: " + formatAttribute(strength) +
+                "\nToughness: " + formatAttribute(toughness) +
+                "\nKnockback Resistance: " + formatAttribute(knockbackResistance) +
+                "\nSpeed: " + formatAttribute(speed) +
+                "\nAttack Speed: " + formatAttribute(attackSpeed) +
+                "\nPrecision: " + formatAttribute(precision) +
+                "\nFerocity: " + formatAttribute(ferocity) +
+                "\n" + Objects.requireNonNull(config.getString("Item.ItemLore"));
+    }
+
+    private String formatAttribute(double attribute) {
+        if (attribute % 1 == 0) {
+            return String.format("%.0f", attribute);
+        } else {
+            return String.format("%.2f", attribute);
+        }
     }
 
     public ItemStack toItemStack() {
